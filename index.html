@@ -7,6 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Cairo:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ─────────────────────────────────────────────
+   DARK THEME (default)
+───────────────────────────────────────────── */
 :root{
   --bg:#02040a;
   --surface:#060d1a;
@@ -21,20 +24,81 @@
   --text2:#5a8a9f;
   --text3:#1e3a4a;
   --text-dim:#4e8099;
+  --nav-bg:rgba(2,4,10,.93);
+  --grid-line:rgba(0,255,200,.045);
+  --glow1:rgba(0,255,200,.08);
+  --glow2:rgba(0,200,255,.06);
+  --scanline-opacity:.06;
+  --cursor-blend:screen;
   --mono:'Share Tech Mono',monospace;
   --display:'Rajdhani',sans-serif;
   --arabic:'Cairo',sans-serif;
 }
 
+/* ─────────────────────────────────────────────
+   LIGHT THEME
+───────────────────────────────────────────── */
+html.light{
+  --bg:#edf2f7;
+  --surface:#dbe8f2;
+  --border:rgba(0,115,130,0.12);
+  --border2:rgba(0,115,130,0.22);
+  --accent:#007d6e;
+  --accent2:#006fa8;
+  --accent-g:rgba(0,125,110,0.08);
+  --red:#c80030;
+  --white:#081520;
+  --text:#1a3245;
+  --text2:#2a5265;
+  --text3:#6a8a9a;
+  --text-dim:#2a5265;
+  --nav-bg:rgba(237,242,247,.96);
+  --grid-line:rgba(0,115,130,.06);
+  --glow1:rgba(0,130,120,.06);
+  --glow2:rgba(0,110,160,.04);
+  --scanline-opacity:0;
+  --cursor-blend:normal;
+}
+
+/* ─────────────────────────────────────────────
+   GLOBAL SMOOTH THEME TRANSITION
+───────────────────────────────────────────── */
+body,nav,footer,section,
+.sk,.pi,.info-row,.c-soc,.c-sl,
+.btn-p,.btn-g,.lang-btn,.theme-btn{
+  transition:
+    background-color .35s ease,
+    border-color .35s ease,
+    color .35s ease,
+    box-shadow .35s ease;
+}
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
+
 body{
-  background:var(--bg);color:var(--text);
+  background:transparent;       /* bg handled by #global-bg */
+  color:var(--text);
   font-family:var(--mono);font-size:15px;font-weight:400;
   line-height:1.65;overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
   cursor:none;
 }
+
+/* ─────────────────────────────────────────────
+   GLOBAL BACKGROUND (animated grid, full page)
+───────────────────────────────────────────── */
+#global-bg{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:60px 60px;
+  animation:grid-move 20s linear infinite;
+  transition:background-color .35s ease;
+}
+@keyframes grid-move{0%{background-position:0 0}100%{background-position:60px 60px}}
 
 /* ── LANG ── */
 .ar{display:none}
@@ -53,7 +117,7 @@ body.arabic{direction:rtl;font-family:var(--arabic)}
   transform:translate(-50%,-50%);
   transition:width .15s,height .15s,background .15s;
   box-shadow:0 0 12px var(--accent),0 0 24px rgba(0,255,200,.3);
-  mix-blend-mode:screen;
+  mix-blend-mode:var(--cursor-blend);
 }
 #cur-ring{
   position:fixed;width:40px;height:40px;
@@ -62,29 +126,33 @@ body.arabic{direction:rtl;font-family:var(--arabic)}
   transform:translate(-50%,-50%);
   transition:width .3s,height .3s,border-color .3s;
 }
+html.light #cur-ring{border-color:rgba(0,125,110,.4)}
 #cur-trail{
   position:fixed;width:4px;height:4px;
   background:var(--accent2);border-radius:50%;
   pointer-events:none;z-index:9997;
   transform:translate(-50%,-50%);
-  opacity:.5;
-  transition:width .2s,height .2s;
+  opacity:.5;transition:width .2s,height .2s;
 }
 body.hovering #cur-dot{width:14px;height:14px;background:var(--accent2)}
 body.hovering #cur-ring{width:60px;height:60px;border-color:var(--accent2)}
 
-/* ── SCANLINES ── */
+/* ── SCANLINES (hidden in light mode via opacity var) ── */
 body::after{
   content:'';position:fixed;inset:0;z-index:997;pointer-events:none;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
+  opacity:var(--scanline-opacity);
+  transition:opacity .35s ease;
 }
 
 /* ── NOISE ── */
 body::before{
   content:'';position:fixed;inset:0;z-index:996;pointer-events:none;
-  opacity:.025;
+  opacity:.02;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  transition:opacity .35s ease;
 }
+html.light body::before{opacity:.008}
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:2px}
@@ -104,10 +172,12 @@ nav{
   position:fixed;top:0;inset-inline:0;z-index:500;
   display:flex;align-items:center;justify-content:space-between;
   padding:1.2rem 5vw;
-  background:rgba(2,4,10,.92);
+  background:var(--nav-bg);
   backdrop-filter:blur(24px);
   border-bottom:1px solid var(--border2);
+  box-shadow:0 1px 0 rgba(0,255,200,.08);
 }
+html.light nav{box-shadow:0 1px 0 rgba(0,115,130,.1)}
 .nav-logo{
   font-family:var(--display);font-size:1.1rem;font-weight:700;
   color:var(--white);letter-spacing:.1em;text-transform:uppercase;
@@ -115,7 +185,7 @@ nav{
 }
 .nav-logo::before{content:'// ';color:var(--accent);font-family:var(--mono);font-size:.85rem}
 .nav-logo .ar-logo{font-family:var(--arabic);font-size:.95rem}
-.nav-r{display:flex;align-items:center;gap:2.5rem}
+.nav-r{display:flex;align-items:center;gap:1.6rem}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
 .nav-links a{
   font-size:.78rem;color:var(--text2);text-decoration:none;
@@ -131,13 +201,20 @@ nav{
 body.arabic .nav-links a::after{transform-origin:right}
 .nav-links a:hover{color:var(--accent);letter-spacing:.2em}
 .nav-links a:hover::after{transform:scaleX(1)}
-.lang-btn{
+
+/* lang + theme buttons share base style */
+.lang-btn,.theme-btn{
   font-family:var(--mono);font-size:.75rem;color:var(--accent);
   border:1px solid var(--border2);background:none;
-  padding:.32rem .85rem;cursor:none;letter-spacing:.15em;
-  transition:all .2s;
+  padding:.32rem .75rem;cursor:none;letter-spacing:.1em;
+  display:inline-flex;align-items:center;gap:.4rem;
 }
-.lang-btn:hover{background:var(--accent-g);border-color:var(--accent);box-shadow:0 0 12px rgba(0,255,200,.2)}
+.lang-btn:hover,.theme-btn:hover{
+  background:var(--accent-g);border-color:var(--accent);
+  box-shadow:0 0 12px rgba(0,255,200,.18);
+}
+html.light .lang-btn:hover,
+html.light .theme-btn:hover{box-shadow:0 0 12px rgba(0,125,110,.2)}
 
 /* ── HERO ── */
 #hero{
@@ -148,29 +225,18 @@ body.arabic .nav-links a::after{transform-origin:right}
   border-bottom:1px solid var(--border2);
 }
 
-/* animated grid */
-.grid-bg{
-  position:absolute;inset:0;z-index:0;
-  background-image:
-    linear-gradient(rgba(0,255,200,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,255,200,.05) 1px,transparent 1px);
-  background-size:60px 60px;
-  animation:grid-move 20s linear infinite;
-}
-@keyframes grid-move{0%{background-position:0 0}100%{background-position:60px 60px}}
-
-/* hero glows */
+/* Hero glows (contained within hero by overflow:hidden) */
 .h-glow1{
   position:absolute;width:800px;height:800px;
   top:-200px;right:-200px;z-index:0;
-  background:radial-gradient(circle,rgba(0,255,200,.08) 0%,transparent 60%);
-  animation:gpulse 9s ease-in-out infinite;
+  background:radial-gradient(circle,var(--glow1) 0%,transparent 60%);
+  animation:gpulse 9s ease-in-out infinite;pointer-events:none;
 }
 .h-glow2{
   position:absolute;width:500px;height:500px;
   bottom:-100px;left:10%;z-index:0;
-  background:radial-gradient(circle,rgba(0,200,255,.06) 0%,transparent 60%);
-  animation:gpulse 12s ease-in-out infinite reverse;
+  background:radial-gradient(circle,var(--glow2) 0%,transparent 60%);
+  animation:gpulse 12s ease-in-out infinite reverse;pointer-events:none;
 }
 @keyframes gpulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
 
@@ -189,7 +255,7 @@ body.arabic .nav-links a::after{transform-origin:right}
 
 .hz{position:relative;z-index:1}
 
-/* glitch effect on name */
+/* glitch on hero name */
 .hero-name{
   font-family:var(--display);font-weight:700;
   font-size:clamp(3.8rem,9vw,9rem);
@@ -203,6 +269,9 @@ body.arabic .hero-name{
 .hero-name .acc{
   color:var(--accent);
   text-shadow:0 0 20px rgba(0,255,200,.4),0 0 60px rgba(0,255,200,.15);
+}
+html.light .hero-name .acc{
+  text-shadow:0 0 18px rgba(0,125,110,.25),0 0 40px rgba(0,125,110,.1);
 }
 .hero-name .line2{
   display:block;
@@ -234,7 +303,6 @@ body.arabic .hero-name{
   font-size:.9rem;color:var(--text);line-height:2;
   animation:fu .7s .2s ease both;
 }
-
 .hero-foot{
   display:flex;align-items:flex-end;justify-content:space-between;
   margin-top:3.5rem;gap:2rem;flex-wrap:wrap;
@@ -245,7 +313,7 @@ body.arabic .hero-name{
 .btn-p{
   font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;
   color:var(--bg);background:var(--accent);padding:.75rem 2rem;
-  text-decoration:none;font-weight:700;transition:all .25s;
+  text-decoration:none;font-weight:700;
   clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
   text-transform:uppercase;position:relative;overflow:hidden;
 }
@@ -256,89 +324,72 @@ body.arabic .hero-name{
 }
 .btn-p:hover::before{transform:translateX(100%)}
 .btn-p:hover{box-shadow:0 0 30px rgba(0,255,200,.5),0 0 60px rgba(0,255,200,.2)}
+html.light .btn-p:hover{box-shadow:0 0 22px rgba(0,125,110,.35)}
 
 .btn-g{
   font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;
   color:var(--accent);border:1px solid var(--border2);padding:.75rem 2rem;
-  text-decoration:none;transition:all .25s;text-transform:uppercase;
+  text-decoration:none;text-transform:uppercase;
   clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
 }
 .btn-g:hover{border-color:var(--accent);background:var(--accent-g);box-shadow:0 0 20px rgba(0,255,200,.15)}
 
-.hero-meta{
-  font-size:.78rem;color:var(--text2);line-height:2;text-align:right;
-}
+.hero-meta{font-size:.78rem;color:var(--text2);line-height:2;text-align:right}
 body.arabic .hero-meta{text-align:left}
 .hero-meta .dim{color:var(--text3);font-size:.72rem}
-
-/* typed cursor */
-.typed-cursor{
-  display:inline-block;width:2px;height:1em;
-  background:var(--accent);vertical-align:middle;margin-left:3px;
-  animation:blink 1s step-end infinite;
-}
 
 @keyframes fu{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}
 
 /* ── SECTIONS ── */
 section{border-bottom:1px solid var(--border2);position:relative;overflow:hidden}
-.s{padding:7rem 5vw;max-width:1200px}
+
+/* Reduced padding: 7rem → 5.5rem */
+.s{padding:5.5rem 5vw;max-width:1200px}
 
 /* section corner decorations */
 .s-corner{
   position:absolute;top:0;left:0;width:40px;height:40px;
   border-top:1px solid var(--accent);border-left:1px solid var(--accent);
-  opacity:.4;animation:corner-pulse 4s ease-in-out infinite;
+  opacity:.35;animation:corner-pulse 4s ease-in-out infinite;
 }
 body.arabic .s-corner{left:auto;right:0;border-left:none;border-right:1px solid var(--accent)}
 .s-corner-br{
   position:absolute;bottom:0;right:0;width:40px;height:40px;
   border-bottom:1px solid var(--accent);border-right:1px solid var(--accent);
-  opacity:.4;animation:corner-pulse 4s ease-in-out infinite .5s;
+  opacity:.35;animation:corner-pulse 4s ease-in-out infinite .5s;
 }
 body.arabic .s-corner-br{right:auto;left:0;border-right:none;border-left:1px solid var(--accent)}
 @keyframes corner-pulse{
-  0%,100%{opacity:.4;width:40px;height:40px}
-  50%{opacity:.7;width:46px;height:46px}
+  0%,100%{opacity:.35;width:40px;height:40px}
+  50%{opacity:.6;width:46px;height:46px}
 }
 
+/* Section label row — numbers removed from HTML, keeping class */
 .s-tag{
   display:flex;align-items:center;gap:.8rem;
-  font-size:.75rem;color:var(--text3);letter-spacing:.2em;
-  text-transform:uppercase;margin-bottom:3rem;
+  font-size:.78rem;color:var(--text2);letter-spacing:.18em;
+  text-transform:uppercase;margin-bottom:2rem;
 }
-.s-tag .num{
-  color:var(--accent);font-size:.7rem;
-  text-shadow:0 0 10px rgba(0,255,200,.4);
-  animation:num-glow 3s ease-in-out infinite;
-}
-@keyframes num-glow{
-  0%,100%{text-shadow:0 0 8px rgba(0,255,200,.35)}
-  50%{text-shadow:0 0 16px rgba(0,255,200,.7),0 0 32px rgba(0,255,200,.2)}
-}
-
-/* shimmer on border of project items */
-.pi{
-  display:grid;grid-template-columns:6rem 1fr auto;
-  gap:2.5rem;align-items:start;
-  padding:2.8rem 0;border-bottom:1px solid var(--border2);
-  transition:padding-inline-start .3s cubic-bezier(.4,0,.2,1), border-color .3s;
-  position:relative;
-}
-.pi:hover{border-color:rgba(0,255,200,.3)}
 .s-tag .ln{width:40px;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
 body.arabic .s-tag{flex-direction:row-reverse}
 
+/* Section headings — increased ~20%, neon glow on .acc */
 .s-h{
   font-family:var(--display);font-weight:700;
-  font-size:clamp(2.2rem,4vw,3.5rem);
-  line-height:1.05;letter-spacing:.03em;color:var(--white);
+  font-size:clamp(2.6rem,4.8vw,4.2rem);
+  line-height:1.02;letter-spacing:.03em;color:var(--white);
   text-transform:uppercase;
 }
-body.arabic .s-h{font-family:var(--arabic);font-weight:600;font-size:clamp(1.9rem,3.5vw,3rem);line-height:1.15;text-transform:none}
+body.arabic .s-h{
+  font-family:var(--arabic);font-weight:600;
+  font-size:clamp(2.2rem,4vw,3.5rem);line-height:1.12;text-transform:none;
+}
 .s-h .acc{
   color:var(--accent);
-  text-shadow:0 0 20px rgba(0,255,200,.3);
+  text-shadow:0 0 22px rgba(0,255,200,.35),0 0 50px rgba(0,255,200,.12);
+}
+html.light .s-h .acc{
+  text-shadow:0 0 16px rgba(0,125,110,.2),0 0 35px rgba(0,125,110,.08);
 }
 
 /* ── ABOUT ── */
@@ -351,32 +402,41 @@ body.arabic .s-h{font-family:var(--arabic);font-weight:600;font-size:clamp(1.9re
 .info-row{
   display:flex;justify-content:space-between;align-items:center;
   padding:.9rem 0;border-bottom:1px solid var(--border);gap:1.5rem;
-  transition:background .2s;position:relative;
+  position:relative;
 }
 .info-row::before{
   content:'';position:absolute;left:0;top:0;bottom:0;width:0;
   background:var(--accent-g);transition:width .3s;
 }
 .info-row:hover::before{width:100%}
-.ik{font-size:.84rem;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;position:relative;z-index:1;transition:color .3s}
+.ik{
+  font-size:.84rem;color:var(--text-dim);letter-spacing:.1em;
+  text-transform:uppercase;white-space:nowrap;
+  position:relative;z-index:1;transition:color .3s;
+}
 .info-row:hover .ik{color:var(--text2)}
 .iv{font-size:.92rem;color:var(--text);text-align:right;position:relative;z-index:1}
 body.arabic .iv{text-align:left}
 .iv.hi{color:var(--accent);text-shadow:0 0 10px rgba(0,255,200,.3)}
+html.light .iv.hi{text-shadow:0 0 10px rgba(0,125,110,.2)}
 
 /* ── SKILLS ── */
 .skills-g{
   display:grid;grid-template-columns:repeat(3,1fr);
-  border:1px solid var(--border2);margin-top:3rem;
+  border:1px solid var(--border2);margin-top:2.5rem;
   position:relative;
+  /* subtle neon glow on grid border */
+  box-shadow:0 0 0 1px transparent, inset 0 0 30px rgba(0,255,200,.02);
 }
+html.light .skills-g{box-shadow:inset 0 0 20px rgba(0,115,130,.02)}
 .sk{
   padding:2.2rem 2rem;border-right:1px solid var(--border2);
   border-bottom:1px solid var(--border2);
-  transition:background .3s;position:relative;overflow:hidden;
+  position:relative;overflow:hidden;
 }
+/* 5 cards: remove right on 3rd, remove bottom on last 2 */
 .sk:nth-child(3n){border-right:none}
-.sk:nth-last-child(-n+3){border-bottom:none}
+.sk:nth-last-child(-n+2){border-bottom:none}
 .sk:hover{background:var(--surface)}
 
 /* scan line on hover */
@@ -384,6 +444,9 @@ body.arabic .iv{text-align:left}
   content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,transparent 0%,rgba(0,255,200,.03) 50%,transparent 100%);
   transform:translateY(-100%);transition:transform .4s ease;
+}
+html.light .sk::after{
+  background:linear-gradient(180deg,transparent 0%,rgba(0,115,130,.04) 50%,transparent 100%);
 }
 .sk:hover::after{transform:translateY(100%)}
 
@@ -397,6 +460,7 @@ body.arabic .iv{text-align:left}
 .sk-n{
   font-family:var(--display);font-size:1rem;color:var(--white);
   font-weight:600;margin-bottom:.3rem;letter-spacing:.05em;text-transform:uppercase;
+  transition:color .3s;
 }
 .sk-s{font-size:.72rem;color:var(--text2);margin-bottom:1.2rem;letter-spacing:.06em}
 .sk-ts{display:flex;flex-wrap:wrap;gap:.4rem}
@@ -405,10 +469,21 @@ body.arabic .iv{text-align:left}
   border:1px solid var(--border);padding:.16rem .52rem;letter-spacing:.06em;
   transition:all .2s;
 }
-.sk:hover .sk-t{color:var(--accent);border-color:rgba(0,255,200,.3);text-shadow:0 0 8px rgba(0,255,200,.3)}
+.sk:hover .sk-t{
+  color:var(--accent);border-color:rgba(0,255,200,.3);
+  text-shadow:0 0 8px rgba(0,255,200,.3);
+}
+html.light .sk:hover .sk-t{text-shadow:none}
 
 /* ── PROJECTS ── */
-.proj-list{margin-top:3rem}
+.proj-list{margin-top:2.5rem}
+.pi{
+  display:grid;grid-template-columns:6rem 1fr auto;
+  gap:2.5rem;align-items:start;
+  padding:2.8rem 0;border-bottom:1px solid var(--border2);
+  transition:padding-inline-start .3s cubic-bezier(.4,0,.2,1),border-color .3s;
+  position:relative;
+}
 .pi:first-child{border-top:1px solid var(--border2)}
 .pi::before{
   content:'';position:absolute;left:0;top:0;bottom:0;width:0;
@@ -418,13 +493,15 @@ body.arabic .iv{text-align:left}
 body.arabic .pi::before{left:auto;right:0;background:linear-gradient(270deg,var(--accent-g),transparent)}
 .pi:hover::before{width:100%}
 .pi:hover{padding-inline-start:1.5rem;border-color:rgba(0,255,200,.3)}
+html.light .pi:hover{border-color:rgba(0,115,130,.3)}
 
 .p-num{
   font-size:1.05rem;color:var(--text2);letter-spacing:.1em;
   padding-top:.3rem;font-family:var(--mono);
-  transition:color .3s, text-shadow .3s;
+  transition:color .3s,text-shadow .3s;
 }
 .pi:hover .p-num{color:var(--accent);text-shadow:0 0 12px rgba(0,255,200,.5)}
+html.light .pi:hover .p-num{text-shadow:0 0 10px rgba(0,125,110,.3)}
 
 .p-ph{
   font-size:.62rem;color:var(--text3);
@@ -434,8 +511,7 @@ body.arabic .pi::before{left:auto;right:0;background:linear-gradient(270deg,var(
 .p-title{
   font-family:var(--display);font-size:1.7rem;font-weight:700;
   color:var(--white);letter-spacing:.04em;line-height:1.05;
-  margin-bottom:.7rem;text-transform:uppercase;
-  transition:color .3s;
+  margin-bottom:.7rem;text-transform:uppercase;transition:color .3s;
 }
 body.arabic .p-title{font-family:var(--arabic);font-weight:500;font-size:1.4rem;text-transform:none}
 .pi:hover .p-title{color:var(--accent)}
@@ -444,10 +520,10 @@ body.arabic .p-title{font-family:var(--arabic);font-weight:500;font-size:1.4rem;
 .p-stack{display:flex;flex-wrap:wrap;gap:.4rem}
 .p-tag{
   font-size:.68rem;color:var(--text2);
-  border:1px solid var(--border);padding:.14rem .52rem;letter-spacing:.06em;
-  transition:all .2s;
+  border:1px solid var(--border);padding:.14rem .52rem;letter-spacing:.06em;transition:all .2s;
 }
 .pi:hover .p-tag{color:var(--accent);border-color:rgba(0,255,200,.25)}
+html.light .pi:hover .p-tag{border-color:rgba(0,115,130,.3)}
 
 .p-lnks{display:flex;flex-direction:column;gap:.6rem;align-items:flex-end;padding-top:.3rem;z-index:1}
 body.arabic .p-lnks{align-items:flex-start}
@@ -457,6 +533,7 @@ body.arabic .p-lnks{align-items:flex-start}
   display:flex;align-items:center;gap:.4rem;
 }
 .p-lnk:hover{color:var(--accent);text-shadow:0 0 8px rgba(0,255,200,.3)}
+html.light .p-lnk:hover{text-shadow:none}
 
 /* ── CONTACT ── */
 #contact .s{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
@@ -467,10 +544,11 @@ body.arabic .p-lnks{align-items:flex-start}
   font-weight:700;letter-spacing:.05em;text-transform:uppercase;
   color:var(--accent);text-decoration:none;
   border-bottom:1px solid var(--border2);padding-bottom:.6rem;
-  transition:all .25s;
   text-shadow:0 0 20px rgba(0,255,200,.2);
 }
 .c-email:hover{color:var(--white);border-color:var(--text2);text-shadow:0 0 30px rgba(0,255,200,.4)}
+html.light .c-email{text-shadow:none}
+html.light .c-email:hover{color:var(--white);text-shadow:none}
 
 .c-sub{font-size:.88rem;color:var(--text);line-height:1.95;margin-bottom:2rem}
 .c-soc{display:flex;border:1px solid var(--border2);overflow:hidden}
@@ -478,14 +556,15 @@ body.arabic .p-lnks{align-items:flex-start}
   font-size:.75rem;color:var(--text2);text-decoration:none;
   padding:.72rem 1.4rem;border-inline-end:1px solid var(--border2);
   letter-spacing:.12em;text-transform:uppercase;
-  transition:all .25s;white-space:nowrap;display:flex;align-items:center;gap:.5rem;
+  white-space:nowrap;display:flex;align-items:center;gap:.5rem;
 }
 .c-sl:last-child{border-inline-end:none}
 .c-sl:hover{color:var(--accent);background:var(--accent-g);text-shadow:0 0 8px rgba(0,255,200,.3)}
+html.light .c-sl:hover{text-shadow:none}
 
 /* ── FOOTER ── */
 footer{
-  padding:1.6rem 5vw;
+  padding:1.5rem 5vw;
   display:flex;align-items:center;justify-content:space-between;
   position:relative;
 }
@@ -507,29 +586,37 @@ footer{
 .stagger.in > *:nth-child(3){opacity:1;transform:none;transition-delay:.19s}
 .stagger.in > *:nth-child(4){opacity:1;transform:none;transition-delay:.26s}
 .stagger.in > *:nth-child(5){opacity:1;transform:none;transition-delay:.33s}
-.stagger.in > *:nth-child(6){opacity:1;transform:none;transition-delay:.40s}
 
 /* ── RESPONSIVE ── */
 @media(max-width:860px){
   nav{padding:1.2rem 5vw}
   .nav-links{display:none}
-  .s{padding:5rem 5vw}
+  .s{padding:4.5rem 5vw}
   #about .s,#contact .s{grid-template-columns:1fr;gap:3rem}
   .skills-g{grid-template-columns:1fr 1fr}
+  /* reset 3n rule, apply 2n */
   .sk:nth-child(3n){border-right:1px solid var(--border2)}
   .sk:nth-child(2n){border-right:none}
+  /* 5 cards in 2 cols → last row = card 5 only */
+  .sk:nth-last-child(-n+2){border-bottom:1px solid var(--border2)}
+  .sk:last-child{border-bottom:none}
   .pi{grid-template-columns:4rem 1fr}
   .p-lnks{display:none}
 }
 @media(max-width:520px){
   .skills-g{grid-template-columns:1fr}
   .sk{border-right:none!important}
+  .sk:nth-last-child(-n+2){border-bottom:1px solid var(--border2)}
+  .sk:last-child{border-bottom:none}
   body{cursor:auto}
   #cur-dot,#cur-ring,#cur-trail{display:none}
 }
 </style>
 </head>
 <body>
+
+<!-- Global animated background (covers full page) -->
+<div id="global-bg"></div>
 
 <!-- CURSOR -->
 <div id="cur-dot"></div>
@@ -552,13 +639,34 @@ footer{
       <li><a href="#projects" data-en="Projects" data-ar="مشاريع">Projects</a></li>
       <li><a href="#contact"  data-en="Contact"  data-ar="تواصل">Contact</a></li>
     </ul>
+    <!-- Theme toggle: shows sun in dark mode, moon in light mode -->
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+      <!-- sun icon (visible in dark mode → click to go light) -->
+      <svg id="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="2" x2="12" y2="4"/>
+        <line x1="12" y1="20" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="4" y2="12"/>
+        <line x1="20" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
+        <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
+        <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+      </svg>
+      <!-- moon icon (visible in light mode → click to go dark) -->
+      <svg id="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round"
+           style="display:none">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
     <button class="lang-btn" id="langBtn">AR</button>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="grid-bg"></div>
   <div class="h-glow1"></div>
   <div class="h-glow2"></div>
   <!-- particles injected by JS -->
@@ -569,14 +677,8 @@ footer{
       <span class="ar">متاح للعمل</span>
     </div>
     <h1 class="hero-name">
-      <span class="en">
-        Youssef<br>
-        <span class="line2 acc">Rashad.</span>
-      </span>
-      <span class="ar">
-        يوسف<br>
-        <span class="line2 acc">رشاد.</span>
-      </span>
+      <span class="en">Youssef<br><span class="line2 acc">Rashad.</span></span>
+      <span class="ar">يوسف<br><span class="line2 acc">رشاد.</span></span>
     </h1>
     <p class="hero-sub en">Junior .NET Backend Developer — building scalable APIs and robust database systems.</p>
     <p class="hero-sub ar">مطوّر باك إند .NET — أبني APIs قابلة للتوسع وأنظمة قواعد بيانات قوية.</p>
@@ -602,15 +704,16 @@ footer{
   <div class="s-corner-br"></div>
   <div class="s">
     <div class="reveal-left">
-      <div class="s-tag"><span class="num">01</span><span class="ln"></span><span class="en">About</span><span class="ar">عني</span></div>
+      <!-- num span removed per requirement -->
+      <div class="s-tag"><span class="ln"></span><span class="en">About</span><span class="ar">عني</span></div>
       <h2 class="s-h en">Backend Dev.<br><span class="acc">Clean Code.</span></h2>
       <h2 class="s-h ar">مطوّر باك إند.<br><span class="acc">كود نظيف.</span></h2>
       <div class="about-text en">
-        <p>I'm Youssef Rashad, a Junior .NET Backend Developer based in Cairo, Egypt. I specialise in building RESTful APIs and database-driven systems using ASP.NET Core, SQL Server, and PostgreSQL.</p>
+        <p>I'm Youssef Rashad, a Junior .NET Backend Developer based in Cairo, Egypt. I specialise in building RESTful APIs and database-driven systems using ASP.NET Core and SQL Server.</p>
         <p>I focus on writing clean, maintainable, purposeful code — not just code that works, but code that lasts.</p>
       </div>
       <div class="about-text ar">
-        <p>أنا يوسف رشاد، مطوّر باك إند جونيور متخصص في .NET، مقيم في القاهرة. أتخصص في بناء APIs وأنظمة قواعد البيانات باستخدام ASP.NET Core و SQL Server و PostgreSQL.</p>
+        <p>أنا يوسف رشاد، مطوّر باك إند جونيور متخصص في .NET، مقيم في القاهرة. أتخصص في بناء APIs وأنظمة قواعد البيانات باستخدام ASP.NET Core و SQL Server.</p>
         <p>أركز على كتابة كود نظيف وقابل للصيانة — مش بس كود يشتغل، لكن كود يدوم.</p>
       </div>
     </div>
@@ -621,7 +724,7 @@ footer{
       <div class="info-row"><span class="ik en">Location</span><span class="ik ar">الموقع</span><span class="iv en">Cairo, Egypt</span><span class="iv ar">القاهرة، مصر</span></div>
       <div class="info-row"><span class="ik en">Focus</span><span class="ik ar">التخصص</span><span class="iv">REST APIs &amp; Databases</span></div>
       <div class="info-row"><span class="ik en">Status</span><span class="ik ar">الحالة</span><span class="iv hi en">Open to Work</span><span class="iv hi ar">متاح للعمل</span></div>
-      <div class="info-row"><span class="ik">Email</span><span class="iv" style="font-size:.78rem">yoosefslim@gmail.com</span></div>
+      <div class="info-row"><span class="ik">Email</span><span class="iv" style="font-size:.8rem">yoosefslim@gmail.com</span></div>
     </div>
   </div>
 </section>
@@ -630,9 +733,10 @@ footer{
 <section id="skills">
   <div class="s-corner"></div>
   <div class="s">
-    <div class="s-tag reveal"><span class="num">02</span><span class="ln"></span><span class="en">Tech Stack</span><span class="ar">التقنيات</span></div>
+    <div class="s-tag reveal"><span class="ln"></span><span class="en">Tech Stack</span><span class="ar">التقنيات</span></div>
     <h2 class="s-h reveal en">What I Build <span class="acc">With</span></h2>
     <h2 class="s-h reveal ar">ما أبني <span class="acc">به</span></h2>
+    <!-- 5 cards (PostgreSQL removed) -->
     <div class="skills-g stagger">
       <div class="sk">
         <div class="sk-n">C#</div>
@@ -655,11 +759,6 @@ footer{
         <div class="sk-ts"><span class="sk-t">T-SQL</span><span class="sk-t">Stored Procs</span><span class="sk-t">Indexing</span></div>
       </div>
       <div class="sk">
-        <div class="sk-n">PostgreSQL</div>
-        <div class="sk-s en">Open-source database</div><div class="sk-s ar">قاعدة بيانات مفتوحة المصدر</div>
-        <div class="sk-ts"><span class="sk-t">Queries</span><span class="sk-t">Migrations</span><span class="sk-t">npgsql</span></div>
-      </div>
-      <div class="sk">
         <div class="sk-n">Dev Tools</div>
         <div class="sk-s en">Tooling &amp; workflow</div><div class="sk-s ar">أدوات التطوير</div>
         <div class="sk-ts"><span class="sk-t">Git</span><span class="sk-t">Postman</span><span class="sk-t">Swagger</span><span class="sk-t">VS 2022</span></div>
@@ -672,7 +771,7 @@ footer{
 <section id="projects">
   <div class="s-corner"></div>
   <div class="s">
-    <div class="s-tag reveal"><span class="num">03</span><span class="ln"></span><span class="en">Projects</span><span class="ar">المشاريع</span></div>
+    <div class="s-tag reveal"><span class="ln"></span><span class="en">Projects</span><span class="ar">المشاريع</span></div>
     <h2 class="s-h reveal en">Selected <span class="acc">Work</span></h2>
     <h2 class="s-h reveal ar">أعمال <span class="acc">مختارة</span></h2>
     <div class="proj-list">
@@ -687,8 +786,8 @@ footer{
           <div class="p-stack"><span class="p-tag">ASP.NET Core</span><span class="p-tag">SQL Server</span><span class="p-tag">EF Core</span><span class="p-tag">JWT</span></div>
         </div>
         <div class="p-lnks">
-          <a href="https://github.com/YoosefRashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
-          <a href="https://github.com/YoosefRashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
           <a href="#" class="p-lnk en-i">→ Live Demo</a>
           <a href="#" class="p-lnk ar-i">→ عرض مباشر</a>
         </div>
@@ -701,11 +800,11 @@ footer{
           <h3 class="p-title ar">API إدارة المهام</h3>
           <p class="p-desc en">Backend system for team task management with role-based access, status tracking, and a clean repository pattern architecture.</p>
           <p class="p-desc ar">نظام باك إند لإدارة مهام الفريق مع صلاحيات مستخدمين، تتبع الحالة، وبناء نظيف على Repository Pattern.</p>
-          <div class="p-stack"><span class="p-tag">ASP.NET Core</span><span class="p-tag">PostgreSQL</span><span class="p-tag">Clean Arch</span><span class="p-tag">EF Core</span></div>
+          <div class="p-stack"><span class="p-tag">ASP.NET Core</span><span class="p-tag">SQL Server</span><span class="p-tag">Clean Arch</span><span class="p-tag">EF Core</span></div>
         </div>
         <div class="p-lnks">
-          <a href="https://github.com/YoosefRashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
-          <a href="https://github.com/YoosefRashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
           <a href="#" class="p-lnk en-i">→ Live Demo</a>
           <a href="#" class="p-lnk ar-i">→ عرض مباشر</a>
         </div>
@@ -721,8 +820,8 @@ footer{
           <div class="p-stack"><span class="p-tag">ASP.NET Core</span><span class="p-tag">SQL Server</span><span class="p-tag">Repository Pattern</span></div>
         </div>
         <div class="p-lnks">
-          <a href="https://github.com/YoosefRashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
-          <a href="https://github.com/YoosefRashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
           <a href="#" class="p-lnk en-i">→ Live Demo</a>
           <a href="#" class="p-lnk ar-i">→ عرض مباشر</a>
         </div>
@@ -737,7 +836,7 @@ footer{
   <div class="s-corner-br"></div>
   <div class="s">
     <div class="reveal-left">
-      <div class="s-tag"><span class="num">04</span><span class="ln"></span><span class="en">Contact</span><span class="ar">تواصل</span></div>
+      <div class="s-tag"><span class="ln"></span><span class="en">Contact</span><span class="ar">تواصل</span></div>
       <h2 class="s-h en">Let's Build<br><span class="acc">Together.</span></h2>
       <h2 class="s-h ar">نبني<br><span class="acc">مع بعض.</span></h2>
       <a href="mailto:yoosefslim@gmail.com" class="c-email">yoosefslim@gmail.com</a>
@@ -745,14 +844,15 @@ footer{
     <div class="reveal-right" style="padding-top:.5rem">
       <p class="c-sub en">Open to new opportunities, collaborations, or a good conversation about backend engineering. My inbox is always open.</p>
       <p class="c-sub ar">متاح للفرص الجديدة والتعاون أو كلام عن الـ backend. ابعتلي في أي وقت.</p>
+      <!-- Social links: LinkedIn → GitHub → Email -->
       <div class="c-soc">
-        <a href="https://x.com/YoosefRashad" target="_blank" class="c-sl">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          X / Twitter
-        </a>
-        <a href="https://www.linkedin.com/in/youssef-rashad-" target="_blank" class="c-sl">
+        <a href="https://www.linkedin.com/in/yoosef-rashad" target="_blank" class="c-sl">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           LinkedIn
+        </a>
+        <a href="https://github.com/Yoosef-Rashad" target="_blank" class="c-sl">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
         </a>
         <a href="mailto:yoosefslim@gmail.com" class="c-sl">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -772,39 +872,64 @@ footer{
 </footer>
 
 <script>
-// ── CURSOR ──
+// ─────────────────────────────────────────────
+// THEME — init from localStorage before paint
+// ─────────────────────────────────────────────
+(function(){
+  const saved = localStorage.getItem('theme');
+  if(saved === 'light') document.documentElement.classList.add('light');
+})();
+
+function applyThemeIcons(isLight){
+  document.getElementById('icon-sun').style.display  = isLight ? 'none'   : 'inline';
+  document.getElementById('icon-moon').style.display = isLight ? 'inline' : 'none';
+}
+// Set icons on initial load
+applyThemeIcons(document.documentElement.classList.contains('light'));
+
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const isLight = document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  applyThemeIcons(isLight);
+});
+
+// ─────────────────────────────────────────────
+// CURSOR
+// ─────────────────────────────────────────────
 const dot   = document.getElementById('cur-dot');
 const ring  = document.getElementById('cur-ring');
 const trail = document.getElementById('cur-trail');
-let mx=0,my=0, rx=0,ry=0, tx=0,ty=0;
+let mx=0,my=0,rx=0,ry=0,tx=0,ty=0;
 
 document.addEventListener('mousemove',e=>{
   mx=e.clientX; my=e.clientY;
   dot.style.left=mx+'px'; dot.style.top=my+'px';
 });
-
 function animCursor(){
   rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
   tx+=(mx-tx)*.07; ty+=(my-ty)*.07;
-  ring.style.left=rx+'px';  ring.style.top=ry+'px';
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
   trail.style.left=tx+'px'; trail.style.top=ty+'px';
   requestAnimationFrame(animCursor);
 }
 animCursor();
-
 document.querySelectorAll('a,button').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
 });
 
-// ── SCROLL PROGRESS ──
+// ─────────────────────────────────────────────
+// SCROLL PROGRESS
+// ─────────────────────────────────────────────
 const prog = document.getElementById('progress');
 window.addEventListener('scroll',()=>{
   const pct = window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
   prog.style.width=pct+'%';
-});
+},{passive:true});
 
-// ── PARTICLES ──
+// ─────────────────────────────────────────────
+// PARTICLES (hero only)
+// ─────────────────────────────────────────────
 const hero = document.getElementById('hero');
 for(let i=0;i<18;i++){
   const p=document.createElement('div');
@@ -821,7 +946,9 @@ for(let i=0;i<18;i++){
   hero.appendChild(p);
 }
 
-// ── SCROLL REVEAL ──
+// ─────────────────────────────────────────────
+// SCROLL REVEAL
+// ─────────────────────────────────────────────
 const io = new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
@@ -829,51 +956,55 @@ const io = new IntersectionObserver(entries=>{
 },{threshold:.08});
 document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger').forEach(el=>io.observe(el));
 
-// ── PROJECT NUMBER COUNT-UP ──
-function countUp(el, target, duration=700){
-  const start = performance.now();
-  const num = parseInt(target);
-  const pad = target.length;
+// ─────────────────────────────────────────────
+// PROJECT NUMBER COUNT-UP
+// ─────────────────────────────────────────────
+function countUp(el,target,duration=700){
+  const start=performance.now();
+  const num=parseInt(target);
+  const pad=target.length;
   function step(now){
-    const p = Math.min((now - start)/duration, 1);
-    const ease = 1 - Math.pow(1 - p, 3); // cubic ease-out
-    const val = Math.floor(ease * num);
-    el.textContent = String(val).padStart(pad,'0');
-    if(p < 1) requestAnimationFrame(step);
-    else el.textContent = target;
+    const p=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=String(Math.floor(ease*num)).padStart(pad,'0');
+    if(p<1) requestAnimationFrame(step);
+    else el.textContent=target;
   }
   requestAnimationFrame(step);
 }
-const numObserver = new IntersectionObserver(entries=>{
+const numObs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
-      const original = e.target.textContent.trim();
-      countUp(e.target, original, 800);
-      numObserver.unobserve(e.target);
+      countUp(e.target,e.target.textContent.trim(),800);
+      numObs.unobserve(e.target);
     }
   });
 },{threshold:.5});
-document.querySelectorAll('.p-num').forEach(el=>numObserver.observe(el));
+document.querySelectorAll('.p-num').forEach(el=>numObs.observe(el));
 
-// ── LANG TOGGLE ──
-const btn=document.getElementById('langBtn');
-btn.addEventListener('click',()=>{
+// ─────────────────────────────────────────────
+// LANG TOGGLE
+// ─────────────────────────────────────────────
+const langBtn=document.getElementById('langBtn');
+langBtn.addEventListener('click',()=>{
   const isAr=document.body.classList.toggle('arabic');
-  btn.textContent=isAr?'EN':'AR';
+  langBtn.textContent=isAr?'EN':'AR';
   document.documentElement.lang=isAr?'ar':'en';
   document.documentElement.dir =isAr?'rtl':'ltr';
-  document.querySelectorAll('.nav-links a').forEach(a=>{a.textContent=isAr?a.dataset.ar:a.dataset.en});
-  // nav logo
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.textContent=isAr?a.dataset.ar:a.dataset.en;
+  });
   document.querySelectorAll('.nav-logo .en-i,.nav-logo .ar-i').forEach(el=>{
     el.style.display=(isAr===el.classList.contains('ar-i'))?'inline':'none';
   });
-  // footer
   document.querySelectorAll('footer .fl').forEach(el=>{
     el.style.display=(isAr===el.classList.contains('ar'))?'inline':'none';
   });
 });
 
-// ── GLITCH ON HOVER HERO ──
+// ─────────────────────────────────────────────
+// GLITCH ON HERO HOVER
+// ─────────────────────────────────────────────
 document.querySelector('.hero-name')?.addEventListener('mouseenter',()=>{
   const el=document.querySelector('.hero-name .acc');
   if(!el)return;
