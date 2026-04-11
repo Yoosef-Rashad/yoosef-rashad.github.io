@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Youssef Rashad — Backend Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Cairo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 /* ─────────────────────────────────────────────
    DARK THEME (default)
@@ -32,7 +32,6 @@
   --cursor-blend:screen;
   --mono:'Share Tech Mono',monospace;
   --display:'Rajdhani',sans-serif;
-  --arabic:'Cairo',sans-serif;
 }
 
 /* ─────────────────────────────────────────────
@@ -65,7 +64,7 @@ html.light{
 ───────────────────────────────────────────── */
 body,nav,footer,section,
 .sk,.pi,.info-row,.c-soc,.c-sl,
-.btn-p,.btn-g,.lang-btn,.theme-btn{
+.btn-p,.btn-g,.theme-btn{
   transition:
     background-color .35s ease,
     border-color .35s ease,
@@ -77,7 +76,7 @@ body,nav,footer,section,
 html{scroll-behavior:smooth}
 
 body{
-  background:transparent;       /* bg handled by #global-bg */
+  background:transparent;
   color:var(--text);
   font-family:var(--mono);font-size:15px;font-weight:400;
   line-height:1.65;overflow-x:hidden;
@@ -99,15 +98,6 @@ body{
   transition:background-color .35s ease;
 }
 @keyframes grid-move{0%{background-position:0 0}100%{background-position:60px 60px}}
-
-/* ── LANG ── */
-.ar{display:none}
-body.arabic .en{display:none!important}
-body.arabic .ar{display:block}
-body.arabic .ar-i{display:inline!important}
-body.arabic .en-i{display:none!important}
-.ar-i{display:none}
-body.arabic{direction:rtl;font-family:var(--arabic)}
 
 /* ── CUSTOM CURSOR ── */
 #cur-dot{
@@ -137,7 +127,7 @@ html.light #cur-ring{border-color:rgba(0,125,110,.4)}
 body.hovering #cur-dot{width:14px;height:14px;background:var(--accent2)}
 body.hovering #cur-ring{width:60px;height:60px;border-color:var(--accent2)}
 
-/* ── SCANLINES (hidden in light mode via opacity var) ── */
+/* ── SCANLINES ── */
 body::after{
   content:'';position:fixed;inset:0;z-index:997;pointer-events:none;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px);
@@ -181,16 +171,14 @@ html.light nav{box-shadow:0 1px 0 rgba(0,115,130,.1)}
 .nav-logo{
   font-family:var(--display);font-size:1.1rem;font-weight:700;
   color:var(--white);letter-spacing:.1em;text-transform:uppercase;
-  position:relative;
 }
 .nav-logo::before{content:'// ';color:var(--accent);font-family:var(--mono);font-size:.85rem}
-.nav-logo .ar-logo{font-family:var(--arabic);font-size:.95rem}
 .nav-r{display:flex;align-items:center;gap:1.6rem}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
 .nav-links a{
   font-size:.78rem;color:var(--text2);text-decoration:none;
   letter-spacing:.15em;text-transform:uppercase;
-  transition:color .25s, letter-spacing .35s cubic-bezier(.4,0,.2,1);
+  transition:color .25s,letter-spacing .35s cubic-bezier(.4,0,.2,1);
   position:relative;
 }
 .nav-links a::after{
@@ -198,22 +186,19 @@ html.light nav{box-shadow:0 1px 0 rgba(0,115,130,.1)}
   height:1px;background:var(--accent);transform:scaleX(0);
   transition:transform .25s;transform-origin:left;
 }
-body.arabic .nav-links a::after{transform-origin:right}
 .nav-links a:hover{color:var(--accent);letter-spacing:.2em}
 .nav-links a:hover::after{transform:scaleX(1)}
 
-/* lang + theme buttons share base style */
-.lang-btn,.theme-btn{
+.theme-btn{
   font-family:var(--mono);font-size:.75rem;color:var(--accent);
   border:1px solid var(--border2);background:none;
   padding:.32rem .75rem;cursor:none;letter-spacing:.1em;
   display:inline-flex;align-items:center;gap:.4rem;
 }
-.lang-btn:hover,.theme-btn:hover{
+.theme-btn:hover{
   background:var(--accent-g);border-color:var(--accent);
   box-shadow:0 0 12px rgba(0,255,200,.18);
 }
-html.light .lang-btn:hover,
 html.light .theme-btn:hover{box-shadow:0 0 12px rgba(0,125,110,.2)}
 
 /* ── HERO ── */
@@ -224,8 +209,6 @@ html.light .theme-btn:hover{box-shadow:0 0 12px rgba(0,125,110,.2)}
   position:relative;overflow:hidden;
   border-bottom:1px solid var(--border2);
 }
-
-/* Hero glows (contained within hero by overflow:hidden) */
 .h-glow1{
   position:absolute;width:800px;height:800px;
   top:-200px;right:-200px;z-index:0;
@@ -240,7 +223,6 @@ html.light .theme-btn:hover{box-shadow:0 0 12px rgba(0,125,110,.2)}
 }
 @keyframes gpulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
 
-/* floating particles */
 .particle{
   position:absolute;border-radius:50%;pointer-events:none;z-index:0;
   background:var(--accent);opacity:0;
@@ -255,16 +237,11 @@ html.light .theme-btn:hover{box-shadow:0 0 12px rgba(0,125,110,.2)}
 
 .hz{position:relative;z-index:1}
 
-/* glitch on hero name */
 .hero-name{
   font-family:var(--display);font-weight:700;
   font-size:clamp(3.8rem,9vw,9rem);
   line-height:.9;letter-spacing:-.01em;color:var(--white);
   position:relative;
-}
-body.arabic .hero-name{
-  font-family:var(--arabic);font-weight:600;
-  font-size:clamp(3rem,7.5vw,7rem);line-height:1.05;
 }
 .hero-name .acc{
   color:var(--accent);
@@ -335,54 +312,41 @@ html.light .btn-p:hover{box-shadow:0 0 22px rgba(0,125,110,.35)}
 .btn-g:hover{border-color:var(--accent);background:var(--accent-g);box-shadow:0 0 20px rgba(0,255,200,.15)}
 
 .hero-meta{font-size:.78rem;color:var(--text2);line-height:2;text-align:right}
-body.arabic .hero-meta{text-align:left}
 .hero-meta .dim{color:var(--text3);font-size:.72rem}
 
 @keyframes fu{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}
 
 /* ── SECTIONS ── */
 section{border-bottom:1px solid var(--border2);position:relative;overflow:hidden}
-
-/* Reduced padding: 7rem → 5.5rem */
 .s{padding:5.5rem 5vw;max-width:1200px}
 
-/* section corner decorations */
 .s-corner{
   position:absolute;top:0;left:0;width:40px;height:40px;
   border-top:1px solid var(--accent);border-left:1px solid var(--accent);
   opacity:.35;animation:corner-pulse 4s ease-in-out infinite;
 }
-body.arabic .s-corner{left:auto;right:0;border-left:none;border-right:1px solid var(--accent)}
 .s-corner-br{
   position:absolute;bottom:0;right:0;width:40px;height:40px;
   border-bottom:1px solid var(--accent);border-right:1px solid var(--accent);
   opacity:.35;animation:corner-pulse 4s ease-in-out infinite .5s;
 }
-body.arabic .s-corner-br{right:auto;left:0;border-right:none;border-left:1px solid var(--accent)}
 @keyframes corner-pulse{
   0%,100%{opacity:.35;width:40px;height:40px}
   50%{opacity:.6;width:46px;height:46px}
 }
 
-/* Section label row — numbers removed from HTML, keeping class */
 .s-tag{
   display:flex;align-items:center;gap:.8rem;
   font-size:.78rem;color:var(--text2);letter-spacing:.18em;
   text-transform:uppercase;margin-bottom:2rem;
 }
 .s-tag .ln{width:40px;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
-body.arabic .s-tag{flex-direction:row-reverse}
 
-/* Section headings — increased ~20%, neon glow on .acc */
 .s-h{
   font-family:var(--display);font-weight:700;
   font-size:clamp(2.6rem,4.8vw,4.2rem);
   line-height:1.02;letter-spacing:.03em;color:var(--white);
   text-transform:uppercase;
-}
-body.arabic .s-h{
-  font-family:var(--arabic);font-weight:600;
-  font-size:clamp(2.2rem,4vw,3.5rem);line-height:1.12;text-transform:none;
 }
 .s-h .acc{
   color:var(--accent);
@@ -394,7 +358,6 @@ html.light .s-h .acc{
 
 /* ── ABOUT ── */
 #about .s{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
-
 .about-text{margin-top:2.5rem;font-size:.9rem;color:var(--text);line-height:2}
 .about-text p+p{margin-top:.9rem}
 
@@ -416,7 +379,6 @@ html.light .s-h .acc{
 }
 .info-row:hover .ik{color:var(--text2)}
 .iv{font-size:.92rem;color:var(--text);text-align:right;position:relative;z-index:1}
-body.arabic .iv{text-align:left}
 .iv.hi{color:var(--accent);text-shadow:0 0 10px rgba(0,255,200,.3)}
 html.light .iv.hi{text-shadow:0 0 10px rgba(0,125,110,.2)}
 
@@ -425,8 +387,7 @@ html.light .iv.hi{text-shadow:0 0 10px rgba(0,125,110,.2)}
   display:grid;grid-template-columns:repeat(3,1fr);
   border:1px solid var(--border2);margin-top:2.5rem;
   position:relative;
-  /* subtle neon glow on grid border */
-  box-shadow:0 0 0 1px transparent, inset 0 0 30px rgba(0,255,200,.02);
+  box-shadow:0 0 0 1px transparent,inset 0 0 30px rgba(0,255,200,.02);
 }
 html.light .skills-g{box-shadow:inset 0 0 20px rgba(0,115,130,.02)}
 .sk{
@@ -434,12 +395,10 @@ html.light .skills-g{box-shadow:inset 0 0 20px rgba(0,115,130,.02)}
   border-bottom:1px solid var(--border2);
   position:relative;overflow:hidden;
 }
-/* 5 cards: remove right on 3rd, remove bottom on last 2 */
 .sk:nth-child(3n){border-right:none}
 .sk:nth-last-child(-n+2){border-bottom:none}
 .sk:hover{background:var(--surface)}
 
-/* scan line on hover */
 .sk::after{
   content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,transparent 0%,rgba(0,255,200,.03) 50%,transparent 100%);
@@ -449,7 +408,6 @@ html.light .sk::after{
   background:linear-gradient(180deg,transparent 0%,rgba(0,115,130,.04) 50%,transparent 100%);
 }
 .sk:hover::after{transform:translateY(100%)}
-
 .sk::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,var(--accent),transparent);
@@ -466,13 +424,9 @@ html.light .sk::after{
 .sk-ts{display:flex;flex-wrap:wrap;gap:.4rem}
 .sk-t{
   font-size:.68rem;color:var(--text2);
-  border:1px solid var(--border);padding:.16rem .52rem;letter-spacing:.06em;
-  transition:all .2s;
+  border:1px solid var(--border);padding:.16rem .52rem;letter-spacing:.06em;transition:all .2s;
 }
-.sk:hover .sk-t{
-  color:var(--accent);border-color:rgba(0,255,200,.3);
-  text-shadow:0 0 8px rgba(0,255,200,.3);
-}
+.sk:hover .sk-t{color:var(--accent);border-color:rgba(0,255,200,.3);text-shadow:0 0 8px rgba(0,255,200,.3)}
 html.light .sk:hover .sk-t{text-shadow:none}
 
 /* ── PROJECTS ── */
@@ -490,7 +444,6 @@ html.light .sk:hover .sk-t{text-shadow:none}
   background:linear-gradient(90deg,var(--accent-g),transparent);
   transition:width .4s cubic-bezier(.4,0,.2,1);
 }
-body.arabic .pi::before{left:auto;right:0;background:linear-gradient(270deg,var(--accent-g),transparent)}
 .pi:hover::before{width:100%}
 .pi:hover{padding-inline-start:1.5rem;border-color:rgba(0,255,200,.3)}
 html.light .pi:hover{border-color:rgba(0,115,130,.3)}
@@ -513,7 +466,6 @@ html.light .pi:hover .p-num{text-shadow:0 0 10px rgba(0,125,110,.3)}
   color:var(--white);letter-spacing:.04em;line-height:1.05;
   margin-bottom:.7rem;text-transform:uppercase;transition:color .3s;
 }
-body.arabic .p-title{font-family:var(--arabic);font-weight:500;font-size:1.4rem;text-transform:none}
 .pi:hover .p-title{color:var(--accent)}
 
 .p-desc{font-size:.88rem;color:var(--text);line-height:1.9;max-width:520px;margin-bottom:1.1rem}
@@ -526,7 +478,6 @@ body.arabic .p-title{font-family:var(--arabic);font-weight:500;font-size:1.4rem;
 html.light .pi:hover .p-tag{border-color:rgba(0,115,130,.3)}
 
 .p-lnks{display:flex;flex-direction:column;gap:.6rem;align-items:flex-end;padding-top:.3rem;z-index:1}
-body.arabic .p-lnks{align-items:flex-start}
 .p-lnk{
   font-size:.75rem;color:var(--text2);text-decoration:none;
   letter-spacing:.1em;transition:color .2s;white-space:nowrap;
@@ -537,7 +488,6 @@ html.light .p-lnk:hover{text-shadow:none}
 
 /* ── CONTACT ── */
 #contact .s{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
-
 .c-email{
   display:block;margin-top:2.5rem;
   font-family:var(--display);font-size:clamp(1.2rem,2.2vw,1.8rem);
@@ -579,7 +529,6 @@ footer{
 .reveal-right{opacity:0;transform:translateX(28px);transition:opacity .75s cubic-bezier(.4,0,.2,1),transform .75s cubic-bezier(.4,0,.2,1)}
 .reveal-right.in{opacity:1;transform:none}
 
-/* stagger children */
 .stagger > *{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
 .stagger.in > *:nth-child(1){opacity:1;transform:none;transition-delay:.05s}
 .stagger.in > *:nth-child(2){opacity:1;transform:none;transition-delay:.12s}
@@ -594,10 +543,8 @@ footer{
   .s{padding:4.5rem 5vw}
   #about .s,#contact .s{grid-template-columns:1fr;gap:3rem}
   .skills-g{grid-template-columns:1fr 1fr}
-  /* reset 3n rule, apply 2n */
   .sk:nth-child(3n){border-right:1px solid var(--border2)}
   .sk:nth-child(2n){border-right:none}
-  /* 5 cards in 2 cols → last row = card 5 only */
   .sk:nth-last-child(-n+2){border-bottom:1px solid var(--border2)}
   .sk:last-child{border-bottom:none}
   .pi{grid-template-columns:4rem 1fr}
@@ -615,53 +562,34 @@ footer{
 </head>
 <body>
 
-<!-- Global animated background (covers full page) -->
 <div id="global-bg"></div>
-
-<!-- CURSOR -->
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
 <div id="cur-trail"></div>
-
-<!-- PROGRESS -->
 <div id="progress"></div>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    <span class="en-i">Youssef Rashad</span>
-    <span class="ar-i ar-logo" style="font-family:var(--arabic)">يوسف رشاد</span>
-  </div>
+  <div class="nav-logo">Youssef Rashad</div>
   <div class="nav-r">
     <ul class="nav-links">
-      <li><a href="#about"    data-en="About"    data-ar="عني">About</a></li>
-      <li><a href="#skills"   data-en="Skills"   data-ar="مهاراتي">Skills</a></li>
-      <li><a href="#projects" data-en="Projects" data-ar="مشاريع">Projects</a></li>
-      <li><a href="#contact"  data-en="Contact"  data-ar="تواصل">Contact</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
-    <!-- Theme toggle: shows sun in dark mode, moon in light mode -->
     <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
-      <!-- sun icon (visible in dark mode → click to go light) -->
-      <svg id="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <svg id="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="2" x2="12" y2="4"/>
-        <line x1="12" y1="20" x2="12" y2="22"/>
-        <line x1="2" y1="12" x2="4" y2="12"/>
-        <line x1="20" y1="12" x2="22" y2="12"/>
-        <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
-        <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
-        <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
-        <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+        <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
       </svg>
-      <!-- moon icon (visible in light mode → click to go dark) -->
-      <svg id="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round"
-           style="display:none">
+      <svg id="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <button class="lang-btn" id="langBtn">AR</button>
   </div>
 </nav>
 
@@ -669,27 +597,24 @@ footer{
 <section id="hero">
   <div class="h-glow1"></div>
   <div class="h-glow2"></div>
-  <!-- particles injected by JS -->
   <div class="hz">
     <div class="hero-tag">
       <span class="dot"></span>
-      <span class="en">Available for opportunities</span>
-      <span class="ar">متاح للعمل</span>
+      Available for opportunities
     </div>
     <h1 class="hero-name">
-      <span class="en">Youssef<br><span class="line2 acc">Rashad.</span></span>
-      <span class="ar">يوسف<br><span class="line2 acc">رشاد.</span></span>
+      Youssef<br><span class="line2 acc">Rashad.</span>
     </h1>
-    <p class="hero-sub en">Junior .NET Backend Developer — building scalable APIs and robust database systems.</p>
-    <p class="hero-sub ar">مطوّر باك إند .NET — أطور APIs قابلة للتوسع وأنظمة قواعد بيانات قوية.</p>
+    <p class="hero-sub">Junior .NET Backend Developer — building scalable APIs and robust database systems.</p>
     <div class="hero-foot">
       <div class="hero-cta">
-        <a href="#projects" class="btn-p en-i">View Work</a>
-        <a href="#projects" class="btn-p ar-i">المشاريع</a>
-        <a href="#contact"  class="btn-g en-i">Get in Touch</a>
-        <a href="#contact"  class="btn-g ar-i">تواصل معي</a>
+        <a href="#projects" class="btn-p">View Work</a>
+        <a href="#contact"  class="btn-g">Get in Touch</a>
       </div>
-     
+      <div class="hero-meta">
+        <div>Cairo, Egypt</div>
+        <div class="dim">yoosefslim@gmail.com</div>
+      </div>
     </div>
   </div>
 </section>
@@ -700,26 +625,20 @@ footer{
   <div class="s-corner-br"></div>
   <div class="s">
     <div class="reveal-left">
-      <!-- num span removed per requirement -->
-      <div class="s-tag"><span class="ln"></span><span class="en">About</span><span class="ar">عني</span></div>
-      <h2 class="s-h en">Backend Dev.<br><span class="acc">Asp.net core.</span></h2>
-      <h2 class="s-h ar">مطوّر باك إند.<br><span class="acc">Asp.net core</span></h2>
-      <div class="about-text en">
+      <div class="s-tag"><span class="ln"></span>About</div>
+      <h2 class="s-h">Backend Dev.<br><span class="acc">Clean Code.</span></h2>
+      <div class="about-text">
         <p>I'm Youssef Rashad, a Junior .NET Backend Developer based in Cairo, Egypt. I specialise in building RESTful APIs and database-driven systems using ASP.NET Core and SQL Server.</p>
         <p>I focus on writing clean, maintainable, purposeful code — not just code that works, but code that lasts.</p>
       </div>
-      <div class="about-text ar">
-        <p>أنا يوسف رشاد، مطوّر باك إند جونيور متخصص في .NET، مقيم في القاهرة. أتخصص في بناء APIs وأنظمة قواعد البيانات باستخدام ASP.NET Core و SQL Server.</p>
-        <p>أركز على كتابة كود نظيف وقابل للصيانة — مش بس كود يشتغل، لكن كود يدوم.</p>
-      </div>
     </div>
     <div class="reveal-right info-table">
-      <div class="info-row"><span class="ik en">Role</span><span class="ik ar">الوظيفة</span><span class="iv">.NET Backend Developer</span></div>
-      <div class="info-row"><span class="ik en">Level</span><span class="ik ar">المستوى</span><span class="iv en">Junior</span><span class="iv ar">مبتدئ</span></div>
-      <div class="info-row"><span class="ik en">Experience</span><span class="ik ar">الخبرة</span><span class="iv en">0 – 2 Years</span><span class="iv ar">0 – 2 سنة</span></div>
-      <div class="info-row"><span class="ik en">Location</span><span class="ik ar">الموقع</span><span class="iv en">Cairo, Egypt</span><span class="iv ar">القاهرة، مصر</span></div>
-      <div class="info-row"><span class="ik en">Focus</span><span class="ik ar">التخصص</span><span class="iv">REST APIs &amp; Databases</span></div>
-      <div class="info-row"><span class="ik en">Status</span><span class="ik ar">الحالة</span><span class="iv hi en">Open to Work</span><span class="iv hi ar">متاح للعمل</span></div>
+      <div class="info-row"><span class="ik">Role</span><span class="iv">.NET Backend Developer</span></div>
+      <div class="info-row"><span class="ik">Level</span><span class="iv">Junior</span></div>
+      <div class="info-row"><span class="ik">Experience</span><span class="iv">0 – 2 Years</span></div>
+      <div class="info-row"><span class="ik">Location</span><span class="iv">Cairo, Egypt</span></div>
+      <div class="info-row"><span class="ik">Focus</span><span class="iv">REST APIs &amp; Databases</span></div>
+      <div class="info-row"><span class="ik">Status</span><span class="iv hi">Open to Work</span></div>
       <div class="info-row"><span class="ik">Email</span><span class="iv" style="font-size:.8rem">yoosefslim@gmail.com</span></div>
     </div>
   </div>
@@ -729,34 +648,32 @@ footer{
 <section id="skills">
   <div class="s-corner"></div>
   <div class="s">
-    <div class="s-tag reveal"><span class="ln"></span><span class="en">Tech Stack</span><span class="ar">التقنيات</span></div>
-    <h2 class="s-h reveal en">What I Build <span class="acc">With</span></h2>
-    <h2 class="s-h reveal ar">ما أطور <span class="acc">به</span></h2>
-    <!-- 5 cards (PostgreSQL removed) -->
+    <div class="s-tag reveal"><span class="ln"></span>Tech Stack</div>
+    <h2 class="s-h reveal">What I Build <span class="acc">With</span></h2>
     <div class="skills-g stagger">
       <div class="sk">
         <div class="sk-n">C#</div>
-        <div class="sk-s en">Primary language</div><div class="sk-s ar">اللغة الأساسية</div>
+        <div class="sk-s">Primary language</div>
         <div class="sk-ts"><span class="sk-t">OOP</span><span class="sk-t">SOLID</span><span class="sk-t">Async/Await</span><span class="sk-t">LINQ</span></div>
       </div>
       <div class="sk">
         <div class="sk-n">ASP.NET Core</div>
-        <div class="sk-s en">Web framework</div><div class="sk-s ar">إطار الويب</div>
+        <div class="sk-s">Web framework</div>
         <div class="sk-ts"><span class="sk-t">REST APIs</span><span class="sk-t">MVC</span><span class="sk-t">Middleware</span><span class="sk-t">JWT Auth</span></div>
       </div>
       <div class="sk">
         <div class="sk-n">Entity Framework</div>
-        <div class="sk-s en">ORM</div><div class="sk-s ar">ORM لـ .NET</div>
+        <div class="sk-s">ORM</div>
         <div class="sk-ts"><span class="sk-t">Code First</span><span class="sk-t">Migrations</span><span class="sk-t">Fluent API</span></div>
       </div>
       <div class="sk">
         <div class="sk-n">SQL Server</div>
-        <div class="sk-s en">Relational database</div><div class="sk-s ar">قاعدة بيانات علائقية</div>
+        <div class="sk-s">Relational database</div>
         <div class="sk-ts"><span class="sk-t">T-SQL</span><span class="sk-t">Stored Procs</span><span class="sk-t">Indexing</span></div>
       </div>
       <div class="sk">
         <div class="sk-n">Dev Tools</div>
-        <div class="sk-s en">Tooling &amp; workflow</div><div class="sk-s ar">أدوات التطوير</div>
+        <div class="sk-s">Tooling &amp; workflow</div>
         <div class="sk-ts"><span class="sk-t">Git</span><span class="sk-t">Postman</span><span class="sk-t">Swagger</span><span class="sk-t">VS 2022</span></div>
       </div>
     </div>
@@ -767,61 +684,52 @@ footer{
 <section id="projects">
   <div class="s-corner"></div>
   <div class="s">
-    <div class="s-tag reveal"><span class="ln"></span><span class="en">Projects</span><span class="ar">المشاريع</span></div>
-    <h2 class="s-h reveal en">Selected <span class="acc">Work</span></h2>
-    <h2 class="s-h reveal ar">أعمال <span class="acc">مختارة</span></h2>
+    <div class="s-tag reveal"><span class="ln"></span>Projects</div>
+    <h2 class="s-h reveal">Selected <span class="acc">Work</span></h2>
     <div class="proj-list">
+
       <div class="pi reveal">
         <div class="p-num">001</div>
         <div>
-          <div class="p-ph en">PLACEHOLDER</div><div class="p-ph ar">نموذج</div>
-          <h3 class="p-title en">E-Commerce REST API</h3>
-          <h3 class="p-title ar">API متجر إلكتروني</h3>
-          <p class="p-desc en">Full-featured RESTful API for an e-commerce platform. Covers auth, product management, cart, and order processing with role-based access control.</p>
-          <p class="p-desc ar">API متكاملة لمنصة تجارة إلكترونية — مصادقة، منتجات، سلة تسوق، ومعالجة طلبات مع صلاحيات مستخدمين.</p>
+          <div class="p-ph">PLACEHOLDER</div>
+          <h3 class="p-title">E-Commerce REST API</h3>
+          <p class="p-desc">Full-featured RESTful API for an e-commerce platform. Covers auth, product management, cart, and order processing with role-based access control.</p>
           <div class="p-stack"><span class="p-tag">ASP.NET Core</span><span class="p-tag">SQL Server</span><span class="p-tag">EF Core</span><span class="p-tag">JWT</span></div>
         </div>
         <div class="p-lnks">
-          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
-          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
-          <a href="#" class="p-lnk en-i">→ Live Demo</a>
-          <a href="#" class="p-lnk ar-i">→ عرض مباشر</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk">→ GitHub</a>
+          <a href="#" class="p-lnk">→ Live Demo</a>
         </div>
       </div>
+
       <div class="pi reveal">
         <div class="p-num">002</div>
         <div>
-          <div class="p-ph en">PLACEHOLDER</div><div class="p-ph ar">نموذج</div>
-          <h3 class="p-title en">Task Management API</h3>
-          <h3 class="p-title ar">API إدارة المهام</h3>
-          <p class="p-desc en">Backend system for team task management with role-based access, status tracking, and a clean repository pattern architecture.</p>
-          <p class="p-desc ar">نظام باك إند لإدارة مهام الفريق مع صلاحيات مستخدمين، تتبع الحالة، وبناء نظيف على Repository Pattern.</p>
+          <div class="p-ph">PLACEHOLDER</div>
+          <h3 class="p-title">Task Management API</h3>
+          <p class="p-desc">Backend system for team task management with role-based access, status tracking, and a clean repository pattern architecture.</p>
           <div class="p-stack"><span class="p-tag">ASP.NET Core</span><span class="p-tag">SQL Server</span><span class="p-tag">Clean Arch</span><span class="p-tag">EF Core</span></div>
         </div>
         <div class="p-lnks">
-          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
-          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
-          <a href="#" class="p-lnk en-i">→ Live Demo</a>
-          <a href="#" class="p-lnk ar-i">→ عرض مباشر</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk">→ GitHub</a>
+          <a href="#" class="p-lnk">→ Live Demo</a>
         </div>
       </div>
+
       <div class="pi reveal">
         <div class="p-num">003</div>
         <div>
-          <div class="p-ph en">PLACEHOLDER</div><div class="p-ph ar">نموذج</div>
-          <h3 class="p-title en">Student Portal API</h3>
-          <h3 class="p-title ar">API بوابة الطلاب</h3>
-          <p class="p-desc en">RESTful API for a student management system — enrollment, grading, and schedule management with a normalised SQL Server schema.</p>
-          <p class="p-desc ar">API لنظام إدارة طلاب — تسجيل، درجات، وجداول دراسية بقاعدة بيانات SQL Server منظمة.</p>
+          <div class="p-ph">PLACEHOLDER</div>
+          <h3 class="p-title">Student Portal API</h3>
+          <p class="p-desc">RESTful API for a student management system — enrollment, grading, and schedule management with a normalised SQL Server schema.</p>
           <div class="p-stack"><span class="p-tag">ASP.NET Core</span><span class="p-tag">SQL Server</span><span class="p-tag">Repository Pattern</span></div>
         </div>
         <div class="p-lnks">
-          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk en-i">→ GitHub</a>
-          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk ar-i">→ GitHub</a>
-          <a href="#" class="p-lnk en-i">→ Live Demo</a>
-          <a href="#" class="p-lnk ar-i">→ عرض مباشر</a>
+          <a href="https://github.com/Yoosef-Rashad" target="_blank" class="p-lnk">→ GitHub</a>
+          <a href="#" class="p-lnk">→ Live Demo</a>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -832,15 +740,12 @@ footer{
   <div class="s-corner-br"></div>
   <div class="s">
     <div class="reveal-left">
-      <div class="s-tag"><span class="ln"></span><span class="en">Contact</span><span class="ar">تواصل</span></div>
-      <h2 class="s-h en">Let's Build<br><span class="acc">Together.</span></h2>
-      <h2 class="s-h ar">نبني<br><span class="acc">مع بعض.</span></h2>
+      <div class="s-tag"><span class="ln"></span>Contact</div>
+      <h2 class="s-h">Let's Build<br><span class="acc">Together.</span></h2>
       <a href="mailto:yoosefslim@gmail.com" class="c-email">yoosefslim@gmail.com</a>
     </div>
     <div class="reveal-right" style="padding-top:.5rem">
-      <p class="c-sub en">Open to new opportunities, collaborations, or a good conversation about backend engineering. My inbox is always open.</p>
-      <p class="c-sub ar">متاح للفرص الجديدة والتعاون أو كلام عن الـ backend. ابعتلي في أي وقت.</p>
-      <!-- Social links: LinkedIn → GitHub → Email -->
+      <p class="c-sub">Open to new opportunities, collaborations, or a good conversation about backend engineering. My inbox is always open.</p>
       <div class="c-soc">
         <a href="https://www.linkedin.com/in/yoosef-rashad" target="_blank" class="c-sl">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -861,51 +766,33 @@ footer{
 
 <!-- FOOTER -->
 <footer>
-  <span class="fl en">© 2026 Youssef Rashad</span>
-  <span class="fl ar" style="display:none">© 2026 يوسف رشاد</span>
-  <span class="fr en-i">Built with <span>precision</span></span>
-  <span class="fr ar-i">مبني بـ <span>دقة</span></span>
+  <span class="fl">© 2026 Youssef Rashad</span>
+  <span class="fr">Built with <span>precision</span></span>
 </footer>
 
 <script>
-// ─────────────────────────────────────────────
-// THEME — init from localStorage before paint
-// ─────────────────────────────────────────────
+// ── THEME ──
 (function(){
-  const saved = localStorage.getItem('theme');
-  if(saved === 'light') document.documentElement.classList.add('light');
+  if(localStorage.getItem('theme')==='light') document.documentElement.classList.add('light');
 })();
-
 function applyThemeIcons(isLight){
   document.getElementById('icon-sun').style.display  = isLight ? 'none'   : 'inline';
   document.getElementById('icon-moon').style.display = isLight ? 'inline' : 'none';
 }
-// Set icons on initial load
 applyThemeIcons(document.documentElement.classList.contains('light'));
-
 document.getElementById('themeBtn').addEventListener('click',()=>{
   const isLight = document.documentElement.classList.toggle('light');
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
   applyThemeIcons(isLight);
 });
 
-// ─────────────────────────────────────────────
-// CURSOR
-// ─────────────────────────────────────────────
-const dot   = document.getElementById('cur-dot');
-const ring  = document.getElementById('cur-ring');
-const trail = document.getElementById('cur-trail');
+// ── CURSOR ──
+const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring'),trail=document.getElementById('cur-trail');
 let mx=0,my=0,rx=0,ry=0,tx=0,ty=0;
-
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX; my=e.clientY;
-  dot.style.left=mx+'px'; dot.style.top=my+'px';
-});
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
 function animCursor(){
-  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
-  tx+=(mx-tx)*.07; ty+=(my-ty)*.07;
-  ring.style.left=rx+'px'; ring.style.top=ry+'px';
-  trail.style.left=tx+'px'; trail.style.top=ty+'px';
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;tx+=(mx-tx)*.07;ty+=(my-ty)*.07;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';trail.style.left=tx+'px';trail.style.top=ty+'px';
   requestAnimationFrame(animCursor);
 }
 animCursor();
@@ -914,99 +801,48 @@ document.querySelectorAll('a,button').forEach(el=>{
   el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
 });
 
-// ─────────────────────────────────────────────
-// SCROLL PROGRESS
-// ─────────────────────────────────────────────
-const prog = document.getElementById('progress');
+// ── SCROLL PROGRESS ──
+const prog=document.getElementById('progress');
 window.addEventListener('scroll',()=>{
-  const pct = window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
-  prog.style.width=pct+'%';
+  prog.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';
 },{passive:true});
 
-// ─────────────────────────────────────────────
-// PARTICLES (hero only)
-// ─────────────────────────────────────────────
-const hero = document.getElementById('hero');
+// ── PARTICLES ──
+const hero=document.getElementById('hero');
 for(let i=0;i<18;i++){
   const p=document.createElement('div');
   p.className='particle';
   const sz=Math.random()*3+1;
-  p.style.cssText=`
-    width:${sz}px;height:${sz}px;
-    left:${Math.random()*100}%;
-    top:${Math.random()*100}%;
-    --dur:${6+Math.random()*10}s;
-    --delay:${Math.random()*8}s;
-    background:${Math.random()>.5?'var(--accent)':'var(--accent2)'};
-  `;
+  p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${6+Math.random()*10}s;--delay:${Math.random()*8}s;background:${Math.random()>.5?'var(--accent)':'var(--accent2)'};`;
   hero.appendChild(p);
 }
 
-// ─────────────────────────────────────────────
-// SCROLL REVEAL
-// ─────────────────────────────────────────────
-const io = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
-  });
+// ── SCROLL REVEAL ──
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
 },{threshold:.08});
 document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger').forEach(el=>io.observe(el));
 
-// ─────────────────────────────────────────────
-// PROJECT NUMBER COUNT-UP
-// ─────────────────────────────────────────────
+// ── PROJECT NUMBER COUNT-UP ──
 function countUp(el,target,duration=700){
-  const start=performance.now();
-  const num=parseInt(target);
-  const pad=target.length;
+  const start=performance.now(),num=parseInt(target),pad=target.length;
   function step(now){
-    const p=Math.min((now-start)/duration,1);
-    const ease=1-Math.pow(1-p,3);
+    const p=Math.min((now-start)/duration,1),ease=1-Math.pow(1-p,3);
     el.textContent=String(Math.floor(ease*num)).padStart(pad,'0');
-    if(p<1) requestAnimationFrame(step);
-    else el.textContent=target;
+    if(p<1) requestAnimationFrame(step); else el.textContent=target;
   }
   requestAnimationFrame(step);
 }
-const numObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      countUp(e.target,e.target.textContent.trim(),800);
-      numObs.unobserve(e.target);
-    }
-  });
+const numObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){countUp(e.target,e.target.textContent.trim(),800);numObs.unobserve(e.target);}});
 },{threshold:.5});
 document.querySelectorAll('.p-num').forEach(el=>numObs.observe(el));
 
-// ─────────────────────────────────────────────
-// LANG TOGGLE
-// ─────────────────────────────────────────────
-const langBtn=document.getElementById('langBtn');
-langBtn.addEventListener('click',()=>{
-  const isAr=document.body.classList.toggle('arabic');
-  langBtn.textContent=isAr?'EN':'AR';
-  document.documentElement.lang=isAr?'ar':'en';
-  document.documentElement.dir =isAr?'rtl':'ltr';
-  document.querySelectorAll('.nav-links a').forEach(a=>{
-    a.textContent=isAr?a.dataset.ar:a.dataset.en;
-  });
-  document.querySelectorAll('.nav-logo .en-i,.nav-logo .ar-i').forEach(el=>{
-    el.style.display=(isAr===el.classList.contains('ar-i'))?'inline':'none';
-  });
-  document.querySelectorAll('footer .fl').forEach(el=>{
-    el.style.display=(isAr===el.classList.contains('ar'))?'inline':'none';
-  });
-});
-
-// ─────────────────────────────────────────────
-// GLITCH ON HERO HOVER
-// ─────────────────────────────────────────────
+// ── GLITCH ON HOVER ──
 document.querySelector('.hero-name')?.addEventListener('mouseenter',()=>{
   const el=document.querySelector('.hero-name .acc');
   if(!el)return;
-  el.style.animation='none';
-  void el.offsetWidth;
-  el.style.animation='glitch-idle .3s ease';
+  el.style.animation='none';void el.offsetWidth;el.style.animation='glitch-idle .3s ease';
 });
 </script>
 </body>
